@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -21,11 +22,23 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $article = Article::create($request->all());
-            return response()->json($article, 201);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to create resource'], 500);
+
+        $article = new Article();
+        $article->title = $request->title;
+        $article->text = $request->text;
+        $article->author_id = $request->author_id;
+        $article->save();
+        if ($article->save()) {
+            return response()->json([
+                'data' => [
+                    'message' => 'Статья успешно создана',
+                    'article' => $article,
+                ]
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Ошибка во время создания статьи',
+            ], 422);
         }
     }
 
@@ -39,6 +52,6 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         Article::destroy($id);
-        return response()->json(null, 204);
+        return response()->json($id, 200);
     }
 }
