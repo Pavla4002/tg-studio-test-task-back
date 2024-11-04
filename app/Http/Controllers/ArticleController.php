@@ -45,7 +45,10 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-        $article->update($request->all());
+        $article->title = $request->title;
+        $article->text = $request->text;
+        $article->author_id = $request->author_id;
+        $article->update();
         return response()->json($article, 200);
     }
 
