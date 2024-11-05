@@ -51,7 +51,13 @@ class ArticleController extends Controller
         $article->text = $request->text;
         $article->author_id = $request->author_id;
         $article->update();
-        return response()->json($article, 200);
+        return response()->json([
+            'id' => $article->id,
+            'title' => $article->title,
+            'text' => $article->text,
+            'author_id' => $article->author_id,
+            'author' => $article->author->only(['id', 'name'])  // Отфильтровываем поля автора
+        ], 200);
     }
 
     public function destroy($id)
