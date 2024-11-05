@@ -29,11 +29,13 @@ class ArticleController extends Controller
         $article->author_id = $request->author_id;
         $article->save();
         if ($article->save()) {
+            $article->load('author:id,name');
             return response()->json([
-                'data' => [
-                    'message' => 'Статья успешно создана',
-                    'article' => $article,
-                ]
+                'id' => $article->id,
+                'title' => $article->title,
+                'text' => $article->text,
+                'author_id' => $article->author_id,
+                'author' => $article->author->only(['id', 'name'])  // Отфильтровываем поля автора
             ], 201);
         } else {
             return response()->json([
