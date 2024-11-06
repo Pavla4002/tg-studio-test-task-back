@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -35,7 +34,7 @@ class ArticleController extends Controller
                 'title' => $article->title,
                 'text' => $article->text,
                 'author_id' => $article->author_id,
-                'author' => $article->author->only(['id', 'name'])  // Отфильтровываем поля автора
+                'author' => $article->author->only(['id', 'name'])
             ], 201);
         } else {
             return response()->json([
@@ -56,7 +55,7 @@ class ArticleController extends Controller
             'title' => $article->title,
             'text' => $article->text,
             'author_id' => $article->author_id,
-            'author' => $article->author->only(['id', 'name'])  // Отфильтровываем поля автора
+            'author' => $article->author->only(['id', 'name'])
         ], 200);
     }
 
